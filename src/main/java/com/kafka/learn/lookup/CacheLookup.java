@@ -1,16 +1,16 @@
 package com.kafka.learn.lookup;
 
 import com.google.common.cache.*;
-import com.kafka.learn.mock.UserdataGenerator;
-import com.kafka.learn.model.DetailData;
+import com.kafka.learn.KafkaProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class CacheLookup  {
 
+    private static final Logger logger = LoggerFactory.getLogger(KafkaProducer.class);
 
 
     static Cache cache  = CacheBuilder.newBuilder()
@@ -19,14 +19,14 @@ public class CacheLookup  {
             .removalListener(new RemovalListener(){
 
                         public void onRemoval(RemovalNotification notification) {
-                            System.out.println("Going to remove data from InputDataPool");
+                            logger.debug("Going to remove data from InputDataPool");
                            // logger.info("Following data is being removed:"+notification.getKey());
                             if(notification.getCause()==RemovalCause.EXPIRED)
                             {
-                                System.out.println("This data expired:"+notification.getKey());
+                                logger.debug("This data expired:"+notification.getKey());
                             }else
                             {
-                                System.out.println("This data didn't expired but evacuated intentionally"+notification.getKey());
+                                logger.debug("This data didn't expired but evacuated intentionally"+notification.getKey());
                             }
 
                         }}

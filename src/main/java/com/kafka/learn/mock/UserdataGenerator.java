@@ -58,8 +58,5 @@ public class UserdataGenerator {
    return output;
   }
 
-    public static void main(String[] args) throws IOException {
-        System.out.println(UserdataGenerator.userid());
-    }
 }
 

@@ -107,22 +107,32 @@ public class KafkaProducer {
                     } catch (CloneNotSupportedException e) {
                         logger.error(e.getMessage());
                     }
-                    final ProducerRecord<String, DetailData> record = new ProducerRecord<String, DetailData>(properties.getProperty("detail_topic"), detailData.getUserId(), detailData);
-                    try {
-                        RecordMetadata metadata = producer.send(record).get();
-                        logger.debug("Detail Record sent with key " + detailData.getUserId() + " to partition " + metadata.partition()
-                                + " with offset " + metadata.offset());
-                    } catch (ExecutionException e) {
-                        logger.error("Error in sending record");
-                        System.out.println(e);
-                    } catch (InterruptedException e) {
-                        logger.error("Error in sending record");
-                        logger.error(e.getMessage());
-                    }
+                    sendSummary(producer, detailData, properties);
                 }
             }
         };
         one.start();
 
+    }
+
+    /**
+     *
+     * @param producer
+     * @param detailData
+     * @param properties
+     */
+    public static void sendSummary(Producer<String, DetailData> producer, DetailData detailData, Properties properties) {
+        final ProducerRecord<String, DetailData> record = new ProducerRecord<String, DetailData>(properties.getProperty("detail_topic"), detailData.getUserId(), detailData);
+        try {
+            RecordMetadata metadata = producer.send(record).get();
+            logger.debug("Detail Record sent with key " + detailData.getUserId() + " to partition " + metadata.partition()
+                    + " with offset " + metadata.offset());
+        } catch (ExecutionException e) {
+            logger.error("Error in sending record");
+            System.out.println(e);
+        } catch (InterruptedException e) {
+            logger.error("Error in sending record");
+            logger.error(e.getMessage());
+        }
     }
 }
