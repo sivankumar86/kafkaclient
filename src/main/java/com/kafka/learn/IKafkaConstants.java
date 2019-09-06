@@ -1,13 +1,13 @@
 package com.kafka.learn;
 
+/***
+ * @author Siva
+ * Configuration details.
+ *
+ */
 public interface IKafkaConstants {
-    public static String KAFKA_BROKERS = "3.93.246.48:3306";
-
-    public static Integer MESSAGE_COUNT=1000;
 
     public static String CLIENT_ID="client1";
-
-    public static String TOPIC_NAME="AWSKafkaTutorialTopic";
 
     public static String GROUP_ID_CONFIG="consumerGroup10";
 
@@ -17,5 +17,5 @@ public interface IKafkaConstants {
 
     public static String OFFSET_RESET_EARLIER="earliest";
 
-    public static Integer MAX_POLL_RECORDS=1;
+   // public static Integer MAX_POLL_RECORDS=1;
 }
