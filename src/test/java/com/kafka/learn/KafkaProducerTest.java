@@ -22,7 +22,7 @@ public class KafkaProducerTest {
 
     @Test
     public void lastSeenTest(){
-        Producer<String, DetailData> producer = ProducerCreator.createDetailProducer(properties);
+       /* Producer<String, DetailData> producer = ProducerCreator.createDetailProducer(properties);
         while (true) {
             DetailData detailData = null;
             try {
@@ -31,14 +31,13 @@ public class KafkaProducerTest {
                 detailData.getMetadata().setTimestamp(System.currentTimeMillis());
                 KafkaProducer.sendSummary(producer,detailData,properties);
 
-
             } catch (IOException e) {
 
             } catch (CloneNotSupportedException e) {
 
             }
 
-        }
+        }*/
     }
 
 
