@@ -37,17 +37,18 @@ public class KafkaProducer {
     }
 
     static void  detailConsumer(Properties properties) {
-        logger.info("Consumer started");
+        logger.info("Detail Consumer started");
         Thread one = new Thread() {
             public void run() {
                 Consumer<String, DetailData> consumer = ConsumerCreator.createConsumer(properties);
+                Producer<String, SummaryData> producer = ProducerCreator.createSummaryProducer(properties);
 
                 while (true) {
                     final ConsumerRecords<String, DetailData> consumerRecords = consumer.poll(1000);
                     if (consumerRecords.count() > 0) {
                         consumerRecords.forEach(record -> {
                             logger.debug("Record Key " + record.key());
-                            summaryProducer(record.value(),properties);
+                            summaryProducer(record.value(),producer,properties);
                             logger.debug("Record partition " + record.partition());
                             logger.debug("Record offset " + record.offset());
                         });
@@ -61,10 +62,9 @@ public class KafkaProducer {
     }
 
 
-    static void summaryProducer(DetailData detailData,Properties properties)  {
+    static void summaryProducer(DetailData detailData,Producer<String, SummaryData> producer,Properties properties)  {
         logger.debug("Summary Producer");
         try {
-            Producer<String, SummaryData> producer = ProducerCreator.createSummaryProducer(properties);
             SummaryData summaryData = new SummaryData();
             summaryData.setUserId(detailData.getUserId());
             summaryData.setFirstSeen(CacheLookup.getLastSeen(detailData.getUserId(), detailData.getMetadata().getTimestamp()));
@@ -95,6 +95,7 @@ public class KafkaProducer {
      */
 
     static void detailProducer(Properties properties)  {
+        logger.info("Detail Producer started");
         Thread one = new Thread() {
             public void run() {
                 Producer<String, DetailData> producer = ProducerCreator.createDetailProducer(properties);
