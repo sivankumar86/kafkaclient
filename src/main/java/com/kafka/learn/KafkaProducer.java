@@ -47,10 +47,10 @@ public class KafkaProducer {
                     final ConsumerRecords<String, DetailData> consumerRecords = consumer.poll(1000);
                     if (consumerRecords.count() > 0) {
                         consumerRecords.forEach(record -> {
-                            logger.debug("Record Key " + record.key());
+                            logger.debug("Consumer Record Key " + record.key());
                             summaryProducer(record.value(),producer,properties);
-                            logger.debug("Record partition " + record.partition());
-                            logger.debug("Record offset " + record.offset());
+                            logger.debug("Consumer Record partition " + record.partition());
+                            logger.debug("Consumer Record offset " + record.offset());
                         });
                         consumer.commitAsync();
                     }
